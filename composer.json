@@ -17,12 +17,17 @@
         {
             "type": "vcs",
             "url":  "git@github.com:ovvio/serializer.git"
+        },
+        {
+            "type": "vcs",
+            "url":  "git@github.com:ovvio/exceptions.git"
         }
     ],
     "require": {
         "php": ">=8.3",
         "ovvio/serializer": "^1.0",
-        "symfony/http-client": "^7.1"
+        "symfony/http-client": "^7.1",
+        "ovvio/exceptions": "^1.0"
     },
     "autoload": {
         "psr-4": { "Ovvio\\Component\\HttpClient\\": "src/" }
