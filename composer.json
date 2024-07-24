@@ -1,0 +1,30 @@
+{
+    "name": "ovvio/http-client",
+    "description": "Provides powerful methods to fetch HTTP resources synchronously or asynchronously",
+    "license": "proprietary",
+    "type": "library",
+    "keywords": ["http"],
+    "authors": [
+        {
+            "name": "Nazir Khusnutdinov",
+            "homepage": "https://nazir.pro",
+            "role": "Owner"
+        }
+    ],
+    "prefer-stable": true,
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:ovvio/serializer.git"
+        }
+    ],
+    "require": {
+        "php": ">=8.3",
+        "ovvio/serializer": "^1.0",
+        "symfony/http-client": "^7.1"
+    },
+    "autoload": {
+        "psr-4": { "Ovvio\\Component\\HttpClient\\": "src/" }
+    }
+}
