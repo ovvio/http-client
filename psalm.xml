@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<psalm errorLevel="1" resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    findUnusedBaselineEntry="true"
+    findUnusedCode="false">
+    <projectFiles>
+        <directory name="src" />
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+    <issueHandlers>
+        <PropertyNotSetInConstructor>
+            <errorLevel type="suppress">
+                <referencedProperty name="Symfony\Bundle\FrameworkBundle\Controller\AbstractController::$container" />
+                <referencedProperty name="Symfony\Component\HttpFoundation\Response::$charset" />
+                <referencedProperty name="Symfony\Component\HttpFoundation\Response::$content" />
+                <referencedProperty name="Symfony\Component\HttpFoundation\Response::$headers" />
+                <referencedProperty name="Symfony\Component\HttpFoundation\Response::$version" />
+                <referencedProperty name="Symfony\Component\HttpFoundation\Response::$statusCode" />
+                <referencedProperty name="Symfony\Component\HttpFoundation\Response::$statusText" />
+            </errorLevel>
+        </PropertyNotSetInConstructor>
+    </issueHandlers>
+    <plugins>
+        <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin" />
+    </plugins>
+</psalm>
