@@ -91,7 +91,7 @@ final class HttpClientService implements HttpClientInterface
         try {
             $response = $this->symfonyHttpClient->request($method, $url, $options);
         } catch (Throwable $th) {
-            throw new Exception\HttpException(message: 'Ошибка запроса', code: 17378668);
+            throw new Exception\HttpException();
             // throw $th;
         }
 
