@@ -1,0 +1,26 @@
+{
+    "name": "ovvio/http-client",
+    "description": "Provides powerful methods to fetch HTTP resources synchronously or asynchronously",
+    "license": "proprietary",
+    "type": "library",
+    "keywords": ["http"],
+    "homepage": "https://ovvio.pro",
+    "authors": [
+        {
+            "name": "Nazir Khusnutdinov",
+            "homepage": "https://nazir.pro",
+            "role": "Owner"
+        }
+    ],
+    "prefer-stable": true,
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=8.4",
+        "ovvio/exceptions": "^1.0",
+        "ovvio/serializer": "^1.0",
+        "symfony/http-client": "^7.2"
+    },
+    "autoload": {
+        "psr-4": { "Ovvio\\Component\\Http\\HttpClient\\": "src/" }
+    }
+}
