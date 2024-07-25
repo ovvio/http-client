@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ovvio\Component\HttpClient\Response;
+namespace Ovvio\Component\Http\HttpClient\Response;
 
 /**
  * HTTP response factory

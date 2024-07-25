@@ -20,9 +20,9 @@ composer require ovvio/http-client
 
 ...
 
-use Ovvio\Component\HttpClient\HttpClientInterface;
-use Ovvio\Component\HttpClient\Request\Enum\RequestMethodEnum;
-use Ovvio\Component\HttpClient\Response\Enum\ResponseStatusCodeEnum;
+use Ovvio\Component\Http\HttpClient\HttpClientInterface;
+use Ovvio\Component\Http\HttpClient\Request\Enum\RequestMethodEnum;
+use Ovvio\Component\Http\HttpClient\Response\Enum\ResponseStatusCodeEnum;
 
 ...
 

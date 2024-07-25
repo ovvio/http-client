@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ovvio\Component\HttpClient\Exception;
+namespace Ovvio\Component\Http\HttpClient\Exception;
 
-use Ovvio\Component\HttpClient\Response\Enum\ResponseStatusCodeEnum;
+use Ovvio\Component\Http\HttpClient\Response\Enum\ResponseStatusCodeEnum;
 use Ovvio\Exceptions\BaseException;
 use Ovvio\Exceptions\Exceptions;
 use Throwable;

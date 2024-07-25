@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ovvio\Component\HttpClient\Response;
+namespace Ovvio\Component\Http\HttpClient\Response;
 
 /**
  * HTTP response.
@@ -17,7 +17,7 @@ interface ResponseInterface
     /**
      * Gets the HTTP headers of the response.
      *
-     * @return string[][] The headers of the response keyed by header names in lowercas
+     * @return string[][] The headers of the response keyed by header names in lowercase
      */
     public function getHeaders(): array;
 

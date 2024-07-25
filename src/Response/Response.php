@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ovvio\Component\HttpClient\Response;
+namespace Ovvio\Component\Http\HttpClient\Response;
 
-use Ovvio\Component\HttpClient\Response\Enum\ResponseStatusCodeEnum;
+use Ovvio\Component\Http\HttpClient\Response\Enum\ResponseStatusCodeEnum;
 use Ovvio\Component\Serializer\SerializerFactory;
 
 /**

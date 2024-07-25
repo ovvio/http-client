@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ovvio\Component\HttpClient\Request;
+namespace Ovvio\Component\Http\HttpClient\Request;
 
 /**
  * HTTP request.

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ovvio\Component\HttpClient\Request\Enum;
+namespace Ovvio\Component\Http\HttpClient\Request\Enum;
 
-use Ovvio\Component\HttpClient\Enum\EnumInterface;
+use Ovvio\Component\Http\HttpClient\Enum\EnumInterface;
 
 /**
  * Request method

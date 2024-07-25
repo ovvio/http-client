@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ovvio\Component\HttpClient;
+namespace Ovvio\Component\Http\HttpClient;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface as SymfonyHttpClientInterface;
 use Throwable;

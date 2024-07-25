@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ovvio\Component\HttpClient\Response\Enum;
+namespace Ovvio\Component\Http\HttpClient\Response\Enum;
 
-use Ovvio\Component\HttpClient\Enum\EnumInterface;
+use Ovvio\Component\Http\HttpClient\Enum\EnumInterface;
 
 /**
  * The HTTP response status code
