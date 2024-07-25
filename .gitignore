@@ -1,11 +1,8 @@
+auth.json
 *.gitignore.*
 
 ###> The others
 composer.lock
-auth.json
-
-compose.yaml
-compose.override.yaml
 
 /.vscode
 /.idea
