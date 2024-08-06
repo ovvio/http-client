@@ -25,9 +25,9 @@
     ],
     "require": {
         "php": ">=8.3",
+        "ovvio/exceptions": "^1.0",
         "ovvio/serializer": "^1.0",
-        "symfony/http-client": "^7.1",
-        "ovvio/exceptions": "^1.0"
+        "symfony/http-client-contracts": "^3.5"
     },
     "autoload": {
         "psr-4": { "Ovvio\\Component\\Http\\HttpClient\\": "src/" }
