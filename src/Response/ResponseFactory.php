@@ -16,7 +16,7 @@ final class ResponseFactory
         null|string $content,
         Enum\ResponseStatusCodeEnum $statusCode,
         array $headers,
-    ): Response {
+    ): ResponseInterface {
         return new Response($content, $statusCode, $headers);
     }
 }

@@ -4,6 +4,7 @@
     "license": "proprietary",
     "type": "library",
     "keywords": ["http"],
+    "homepage": "https://ovvio.pro",
     "authors": [
         {
             "name": "Nazir Khusnutdinov",
@@ -13,21 +14,11 @@
     ],
     "prefer-stable": true,
     "minimum-stability": "dev",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url":  "git@github.com:ovvio/serializer.git"
-        },
-        {
-            "type": "vcs",
-            "url":  "git@github.com:ovvio/exceptions.git"
-        }
-    ],
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.4",
         "ovvio/exceptions": "^1.0",
         "ovvio/serializer": "^1.0",
-        "symfony/http-client-contracts": "^3.5"
+        "symfony/http-client": "^7.2"
     },
     "autoload": {
         "psr-4": { "Ovvio\\Component\\Http\\HttpClient\\": "src/" }
