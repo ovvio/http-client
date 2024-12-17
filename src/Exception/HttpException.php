@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace Ovvio\Component\Http\HttpClient\Exception;
 
-use Ovvio\Component\Http\HttpClient\Response\Enum\ResponseStatusCodeEnum;
+use Ovvio\Component\Http\HttpClient\Response\Enum\ResponseStatusCode;
 use Ovvio\Exceptions\BaseException;
 use Ovvio\Exceptions\Exceptions;
 use Throwable;
 
+/**
+ * HTTP exception
+ */
 class HttpException extends BaseException
 {
     /**
-     * @param ResponseStatusCodeEnum $statusCode HTTP response status codes
+     * @param ResponseStatusCode $statusCode HTTP response status codes
      */
     public function __construct(
-        private ResponseStatusCodeEnum $statusCode = ResponseStatusCodeEnum::HTTP_INTERNAL_SERVER_ERROR,
+        private ResponseStatusCode $statusCode = ResponseStatusCode::HTTP_INTERNAL_SERVER_ERROR,
         string $message = 'HTTP exception',
         null|int $code = Exceptions::EXCEPTION_CODE_DEFAULT,
         null|Throwable $previous = null,
@@ -30,9 +33,9 @@ class HttpException extends BaseException
     /**
      * Get the value of statusCode
      *
-     * @return ResponseStatusCodeEnum
+     * @return ResponseStatusCode
      */
-    public function getStatusCode(): ResponseStatusCodeEnum
+    public function getStatusCode(): ResponseStatusCode
     {
         return $this->statusCode;
     }

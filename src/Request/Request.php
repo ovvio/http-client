@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ovvio\Component\Http\HttpClient\Request;
 
-use Ovvio\Component\Http\HttpClient\Request\Enum\RequestMethodEnum;
+use Ovvio\Component\Http\HttpClient\Request\Enum\RequestMethod;
 
 /**
  * HTTP request
@@ -12,21 +12,32 @@ use Ovvio\Component\Http\HttpClient\Request\Enum\RequestMethodEnum;
 final class Request implements RequestInterface
 {
     /**
-     * @var null|array $data
+     * Request body
+     *
+     * @var null|array $body
      */
-    private null|array $data = null;
+    private null|array $body = null;
 
     /**
+     * An associative array of the query string values added to the URL before making the request.
+     * This value must use the format ['parameter-name' => parameter-value, ...].
+     *
      * @var null|array $query
      */
     private null|array $query = null;
 
     /**
+     * An associative array of the HTTP headers added before making the request.
+     * This value must use the format ['header-name' => 'value0, value1, ...'].
+     *
      * @var string[][] $headers
      */
     private array $headers = [];
 
     /**
+     * Time, in seconds, to wait for a response. If the response takes longer, a TransportException is thrown.
+     * Its default value is the same as the value of PHP's default_socket_timeout config option.
+     *
      * @var null|int $timeout
      */
     private null|int $timeout = null;
@@ -36,18 +47,24 @@ final class Request implements RequestInterface
      */
     private null|int $connectionTimeout = null;
 
-
     /**
-     * @var null|string $rawData
+     * Raw body
+     *
+     * @var null|string $rawBody
      */
-    private null|string $rawData = null;
+    private null|string $rawBody = null;
 
     /**
+     * The path of the certificate authority file that contains one or more certificates used to verify the other
+     * servers' certificates.
+     *
      * @var null|string $caFile
      */
     private null|string $caFile = null;
 
     /**
+     * The path to a directory that contains one or more certificate authority files.
+     *
      * @var null|string $caPath
      */
     private null|string $caPath = null;
@@ -57,10 +74,21 @@ final class Request implements RequestInterface
      */
     private null|array $authBasic = null;
 
+    /**
+     * @var bool $isJson Is it JSON?
+     */
+    private bool $isJson;
+
+    /**
+     * @param string $url URL
+     * @param bool $isJson Is it JSON?
+     */
     public function __construct(
         private readonly string $url,
-        private readonly RequestMethodEnum $method = RequestMethodEnum::GET,
+        private readonly RequestMethod $method = RequestMethod::GET,
+        bool $isJson = false,
     ) {
+        $this->isJson = $isJson;
     }
 
     /**
@@ -74,19 +102,21 @@ final class Request implements RequestInterface
     /**
      * @see RequestInterface
      */
-    public function getMethod(): RequestMethodEnum
+    public function getMethod(): RequestMethod
     {
         return $this->method;
     }
 
     /**
-     * @param null|array $data
+     * Request body
+     *
+     * @param null|array $body
      *
      * @return $this
      */
-    public function setData(null|array $data): self
+    public function setBody(null|array $body): self
     {
-        $this->data = $data;
+        $this->body = $body;
 
         return $this;
     }
@@ -94,12 +124,15 @@ final class Request implements RequestInterface
     /**
      * @see RequestInterface
      */
-    public function getData(): null|array
+    public function getBody(): null|array
     {
-        return $this->data;
+        return $this->body;
     }
 
     /**
+     * An associative array of the query string values added to the URL before making the request.
+     * This value must use the format ['parameter-name' => parameter-value, ...].
+     *
      * @param null|array $query
      *
      * @return $this
@@ -120,6 +153,9 @@ final class Request implements RequestInterface
     }
 
     /**
+     * An associative array of the HTTP headers added before making the request.
+     * This value must use the format ['header-name' => 'value0, value1, ...'].
+     *
      * @param null|string[][] $headers
      *
      * @return $this
@@ -140,6 +176,9 @@ final class Request implements RequestInterface
     }
 
     /**
+     * Time, in seconds, to wait for a response. If the response takes longer, a TransportException is thrown.
+     * Its default value is the same as the value of PHP's default_socket_timeout config option.
+     *
      * @param null|int $timeout
      *
      * @return $this
@@ -160,6 +199,9 @@ final class Request implements RequestInterface
     }
 
     /**
+     * The maximum execution time, in seconds, that the request and the response are allowed to take.
+     * A value lower than or equal to 0 means it is unlimited.
+     *
      * @param null|int $connectionTimeout
      *
      * @return $this
@@ -180,13 +222,15 @@ final class Request implements RequestInterface
     }
 
     /**
-     * @param null|string $rawData
+     * Raw request body
+     *
+     * @param null|string $rawBody
      *
      * @return $this
      */
-    public function setRawData(null|string $rawData): self
+    public function setRawBody(null|string $rawBody): self
     {
-        $this->rawData = $rawData;
+        $this->rawBody = $rawBody;
 
         return $this;
     }
@@ -194,12 +238,15 @@ final class Request implements RequestInterface
     /**
      * @see RequestInterface
      */
-    public function getRawData(): null|string
+    public function getRawBody(): null|string
     {
-        return $this->rawData;
+        return $this->rawBody;
     }
 
     /**
+     * The path of the certificate authority file that contains one or more certificates used to verify the other
+     * servers' certificates.
+     *
      * @param null|string $caFile
      *
      * @return $this
@@ -220,6 +267,8 @@ final class Request implements RequestInterface
     }
 
     /**
+     * The path to a directory that contains one or more certificate authority files.
+     *
      * @param null|string $caFile
      *
      * @return $this
@@ -240,6 +289,9 @@ final class Request implements RequestInterface
     }
 
     /**
+     * The username and password used to create the Authorization HTTP header used in HTTP Basic authentication.
+     * The value of this option must follow the format username:password.
+     *
      * @param null|array{username:string, password?: string} $authBasic
      *
      * @return $this
@@ -257,5 +309,13 @@ final class Request implements RequestInterface
     public function getAuthBasic(): null|array
     {
         return $this->authBasic;
+    }
+
+    /**
+     * @see RequestInterface
+     */
+    public function isJson(): bool
+    {
+        return $this->isJson;
     }
 }

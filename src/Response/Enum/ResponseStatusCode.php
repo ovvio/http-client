@@ -9,7 +9,7 @@ use Ovvio\Component\Http\HttpClient\Enum\EnumInterface;
 /**
  * The HTTP response status code
  */
-enum ResponseStatusCodeEnum: int implements EnumInterface
+enum ResponseStatusCode: int implements EnumInterface
 {
     case HTTP_CONTINUE = 100;
     case HTTP_SWITCHING_PROTOCOLS = 101;

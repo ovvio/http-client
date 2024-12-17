@@ -4,7 +4,7 @@ Provides powerful methods to fetch HTTP resources synchronously or asynchronousl
 
 ## Technical Requirements & Installation
 
-[PHP 8.3](https://www.php.net/releases/8.3/en.php) - [Installation and Configuration](https://www.php.net/manual/en/install.php)
+[PHP 8.4](https://www.php.net/releases/8.4/en.php) - [Installation and Configuration](https://www.php.net/manual/en/install.php)
 
 [Composer (System Requirements)](https://getcomposer.org/doc/00-intro.md#system-requirements)
 
@@ -21,8 +21,8 @@ composer require ovvio/http-client
 ...
 
 use Ovvio\Component\Http\HttpClient\HttpClientInterface;
-use Ovvio\Component\Http\HttpClient\Request\Enum\RequestMethodEnum;
-use Ovvio\Component\Http\HttpClient\Response\Enum\ResponseStatusCodeEnum;
+use Ovvio\Component\Http\HttpClient\Request\Enum\RequestMethod;
+use Ovvio\Component\Http\HttpClient\Response\Enum\ResponseStatusCode;
 
 ...
 
@@ -40,7 +40,7 @@ use Ovvio\Component\Http\HttpClient\Response\Enum\ResponseStatusCodeEnum;
 
         /** @var string $url URL */
         $url = 'https://ovvio.pro';
-        $requestMethod = RequestMethodEnum::GET;
+        $requestMethod = RequestMethod::GET;
 
         $request = RequestFactory::create(
             url: $url,
@@ -48,7 +48,7 @@ use Ovvio\Component\Http\HttpClient\Response\Enum\ResponseStatusCodeEnum;
         );
 
         $response = $this->httpClient->request($request);
-        if ($response->getStatusCode() !== ResponseStatusCodeEnum::HTTP_OK) {
+        if ($response->getStatusCode() !== ResponseStatusCode::HTTP_OK) {
             // do something
         }
 

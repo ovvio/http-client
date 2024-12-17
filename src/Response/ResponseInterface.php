@@ -12,7 +12,7 @@ interface ResponseInterface
     /**
      * Gets the HTTP status code of the response.
      */
-    public function getStatusCode(): Enum\ResponseStatusCodeEnum;
+    public function getStatusCode(): Enum\ResponseStatusCode;
 
     /**
      * Gets the HTTP headers of the response.

@@ -14,9 +14,9 @@ final class ResponseFactory
      */
     public static function create(
         null|string $content,
-        Enum\ResponseStatusCodeEnum $statusCode,
+        Enum\ResponseStatusCode $statusCode,
         array $headers,
-    ): Response {
+    ): ResponseInterface {
         return new Response($content, $statusCode, $headers);
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ovvio\Component\Http\HttpClient\Response;
 
-use Ovvio\Component\Http\HttpClient\Response\Enum\ResponseStatusCodeEnum;
+use Ovvio\Component\Http\HttpClient\Response\Enum\ResponseStatusCode;
 use Ovvio\Component\Serializer\SerializerFactory;
 
 /**
@@ -13,9 +13,9 @@ use Ovvio\Component\Serializer\SerializerFactory;
 final class Response implements ResponseInterface
 {
     /**
-     * @var ResponseStatusCodeEnum $statusCode
+     * @var ResponseStatusCode $statusCode
      */
-    private ResponseStatusCodeEnum $statusCode;
+    private ResponseStatusCode $statusCode;
 
     /**
      * @var string $content
@@ -32,7 +32,7 @@ final class Response implements ResponseInterface
      */
     public function __construct(
         null|string $content = '',
-        ResponseStatusCodeEnum $statusCode = ResponseStatusCodeEnum::HTTP_OK,
+        ResponseStatusCode $statusCode = ResponseStatusCode::HTTP_OK,
         array $headers = [],
     ) {
         $this->setContent($content);
@@ -45,7 +45,7 @@ final class Response implements ResponseInterface
      *
      * @return $this
      */
-    public function setStatusCode(ResponseStatusCodeEnum $statusCode): self
+    public function setStatusCode(ResponseStatusCode $statusCode): self
     {
         $this->statusCode = $statusCode;
 
@@ -55,7 +55,7 @@ final class Response implements ResponseInterface
     /**
      * @see ResponseInterface
      */
-    public function getStatusCode(): ResponseStatusCodeEnum
+    public function getStatusCode(): ResponseStatusCode
     {
         return $this->statusCode;
     }

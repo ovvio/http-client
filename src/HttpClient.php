@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace Ovvio\Component\Http\HttpClient;
 
-use Symfony\Contracts\HttpClient\HttpClientInterface as SymfonyHttpClientInterface;
 use Throwable;
-
-use function key_exists;
 
 /**
  * Provides flexible methods for requesting HTTP resources.
  */
-final class HttpClientService implements HttpClientInterface
+final class HttpClient implements HttpClientInterface
 {
-    public function __construct(
-        private readonly SymfonyHttpClientInterface $symfonyHttpClient,
-    ) {
+    private \Symfony\Contracts\HttpClient\HttpClientInterface $symfonyHttpClient;
+
+    public function __construct()
+    {
+        $this->symfonyHttpClient = \Symfony\Component\HttpClient\HttpClient::create();
     }
 
     /**
@@ -35,22 +34,32 @@ final class HttpClientService implements HttpClientInterface
         // https://symfony.com/doc/current/reference/configuration/framework.html#verify-peer
         $options['verify_peer'] = false;
 
-        if (Request\Enum\RequestMethodEnum::POST === $request->getMethod()) {
-            $jsonData = $request->getData();
-            if (null !== $jsonData) {
-                $options['json'] = $jsonData;
-            } else {
-                $rawData = $request->getRawData();
-                if (null !== $rawData) {
-                    $options['body'] = $rawData;
-                }
-            }
-        }
-
         // https://symfony.com/doc/current/reference/configuration/framework.html#query
         $query = $request->getQuery();
         if (null !== $query) {
             $options['query'] = $query;
+        }
+
+        if (Request\Enum\RequestMethod::POST === $request->getMethod()) {
+            $body = $request->getBody();
+            if (null !== $body) {
+                if (true === $request->isJson()) {
+                    $options['json'] = $body;
+                } else {
+                    $options['body'] = $body;
+                }
+            } else {
+                $rawBody = $request->getRawBody();
+                if (null !== $rawBody) {
+                    $options['body'] = $rawBody;
+                }
+            }
+        }
+
+        // https://symfony.com/doc/current/http_client.html#headers
+        $headers = $request->getHeaders();
+        if (null !== $headers) {
+            $options['headers'] = $headers;
         }
 
         // https://symfony.com/doc/current/reference/configuration/framework.html#timeout
@@ -81,7 +90,7 @@ final class HttpClientService implements HttpClientInterface
         $authBasic = $request->getAuthBasic();
         if (null !== $authBasic) {
             $authBasicOption = $authBasic['username'];
-            if (key_exists('password', $authBasic)) {
+            if (true === isset($authBasic['password'])) {
                 $authBasicOption = ':' . $authBasic['password'];
             }
 
@@ -91,13 +100,13 @@ final class HttpClientService implements HttpClientInterface
         try {
             $response = $this->symfonyHttpClient->request($method, $url, $options);
         } catch (Throwable $th) {
-            throw new Exception\HttpException();
+            throw new Exception\HttpException(message: $th->getMessage());
             // throw $th;
         }
 
         return Response\ResponseFactory::create(
             content: $response->getContent(),
-            statusCode: Response\Enum\ResponseStatusCodeEnum::from($response->getStatusCode()),
+            statusCode: Response\Enum\ResponseStatusCode::from($response->getStatusCode()),
             headers: $response->getHeaders(),
         );
     }

@@ -9,8 +9,7 @@ use Ovvio\Component\Http\HttpClient\Enum\EnumInterface;
 /**
  * Request method
  */
-
-enum RequestMethodEnum: string implements EnumInterface
+enum RequestMethod: string implements EnumInterface
 {
     case GET = 'GET';
     case POST = 'POST';
