@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Ovvio\Component\Http\HttpClient\Response;
 
-use Ovvio\Component\Http\HttpClient\Response\Enum\ResponseStatusCode;
-
 /**
  * HTTP response factory
  */
@@ -14,11 +12,13 @@ final class ResponseFactory
     /**
      * @param string[][] $headers
      */
+    #[\NoDiscard]
     public static function create(
-        Enum\ResponseStatusCode $statusCode = ResponseStatusCode::HTTP_OK,
-        null|string $body = null,
+        Enum\HttpResponseStatusCodeEnum $statusCode = Enum\HttpResponseStatusCodeEnum::OK,
+        ?string $rawBody = null,
         array $headers = [],
+        ?array $body = null,
     ): ResponseInterface {
-        return new Response(statusCode: $statusCode, body: $body, headers: $headers);
+        return new Response(statusCode: $statusCode, rawBody: $rawBody, headers: $headers, body: $body);
     }
 }

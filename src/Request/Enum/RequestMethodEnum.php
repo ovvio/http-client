@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Ovvio\Component\Http\HttpClient\Request\Enum;
 
-use Ovvio\Component\Http\HttpClient\Enum\EnumInterface;
-
 /**
  * Request method
  */
-enum RequestMethod: string implements EnumInterface
+enum RequestMethodEnum: string
 {
     case GET = 'GET';
     case POST = 'POST';

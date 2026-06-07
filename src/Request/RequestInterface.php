@@ -12,16 +12,18 @@ interface RequestInterface
     /**
      * Get URL
      *
-     * @return string
+     * @return \Uri\Rfc3986\Uri
      */
-    public function getUrl(): string;
+    #[\NoDiscard]
+    public function getUrl(): \Uri\Rfc3986\Uri;
 
     /**
      * Get request method
      *
-     * @return Enum\RequestMethod
+     * @return Enum\RequestMethodEnum
      */
-    public function getMethod(): Enum\RequestMethod;
+    #[\NoDiscard]
+    public function getMethod(): Enum\RequestMethodEnum;
 
     /**
      * Get query
@@ -31,14 +33,16 @@ interface RequestInterface
      *
      * @return null|array
      */
-    public function getQuery(): null|array;
+    #[\NoDiscard]
+    public function getQuery(): ?array;
 
     /**
      * An associative array of the HTTP headers added before making the request.
      * This value must use the format ['header-name' => 'value0, value1, ...'].
      *
-     * @return string[][]
+     * @return array<non-empty-string, string>
      */
+    #[\NoDiscard]
     public function getHeaders(): array;
 
     /**
@@ -46,7 +50,8 @@ interface RequestInterface
      *
      * @return null|array
      */
-    public function getBody(): null|array;
+    #[\NoDiscard]
+    public function getBody(): ?array;
 
     /**
      * Time, in seconds, to wait for a response. If the response takes longer, a TransportException is thrown.
@@ -54,7 +59,8 @@ interface RequestInterface
      *
      * @return null|int
      */
-    public function getTimeout(): null|int;
+    #[\NoDiscard]
+    public function getTimeout(): ?int;
 
     /**
      * The maximum execution time, in seconds, that the request and the response are allowed to take.
@@ -62,14 +68,16 @@ interface RequestInterface
      *
      * @return null|int
      */
-    public function getConnectionTimeout(): null|int;
+    #[\NoDiscard]
+    public function getConnectionTimeout(): ?int;
 
     /**
      * Get raw request body
      *
      * @return null|string
      */
-    public function getRawBody(): null|string;
+    #[\NoDiscard]
+    public function getRawBody(): ?string;
 
     /**
      * The path of the certificate authority file that contains one or more certificates used to verify the other
@@ -77,14 +85,16 @@ interface RequestInterface
      *
      * @return null|string
      */
-    public function getCaFile(): null|string;
+    #[\NoDiscard]
+    public function getCaFile(): ?string;
 
     /**
      * The path to a directory that contains one or more certificate authority files.
      *
      * @return null|string
      */
-    public function getCaPath(): null|string;
+    #[\NoDiscard]
+    public function getCaPath(): ?string;
 
     /**
      * Get HTTP Basic authentication (RFC 7617)
@@ -93,12 +103,14 @@ interface RequestInterface
      *
      * @return null|array{username:string, password?: string}
      */
-    public function getAuthBasic(): null|array;
+    #[\NoDiscard]
+    public function getAuthBasic(): ?array;
 
     /**
      * Is it JSON?
      *
      * @return bool
      */
+    #[\NoDiscard]
     public function isJson(): bool;
 }

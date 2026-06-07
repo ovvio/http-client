@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ovvio\Component\Http\HttpClient\Request;
 
-use Ovvio\Component\Http\HttpClient\Request\Enum\RequestMethod;
+use Ovvio\Component\Http\HttpClient\Request\Enum\RequestMethodEnum;
 
 /**
  * HTTP request
@@ -16,7 +16,7 @@ final class Request implements RequestInterface
      *
      * @var null|array $body
      */
-    private null|array $body = null;
+    private ?array $body = null;
 
     /**
      * An associative array of the query string values added to the URL before making the request.
@@ -24,13 +24,13 @@ final class Request implements RequestInterface
      *
      * @var null|array $query
      */
-    private null|array $query = null;
+    private ?array $query = null;
 
     /**
      * An associative array of the HTTP headers added before making the request.
      * This value must use the format ['header-name' => 'value0, value1, ...'].
      *
-     * @var string[][] $headers
+     * @var array<non-empty-string, string> $headers
      */
     private array $headers = [];
 
@@ -40,19 +40,19 @@ final class Request implements RequestInterface
      *
      * @var null|int $timeout
      */
-    private null|int $timeout = null;
+    private ?int $timeout = null;
 
     /**
-     * @var null|int $connectionTimeout
+     * @var null|int $connectionTimeout Connection timeout
      */
-    private null|int $connectionTimeout = null;
+    private ?int $connectionTimeout = null;
 
     /**
      * Raw body
      *
-     * @var null|string $rawBody
+     * @var null|string $rawBody Raw body
      */
-    private null|string $rawBody = null;
+    private ?string $rawBody = null;
 
     /**
      * The path of the certificate authority file that contains one or more certificates used to verify the other
@@ -60,41 +60,40 @@ final class Request implements RequestInterface
      *
      * @var null|string $caFile
      */
-    private null|string $caFile = null;
+    private ?string $caFile = null;
 
     /**
-     * The path to a directory that contains one or more certificate authority files.
-     *
-     * @var null|string $caPath
+     * @var null|string $caPath The path to a directory that contains one or more certificate authority files.
      */
-    private null|string $caPath = null;
+    private ?string $caPath = null;
 
     /**
-     * @var null|array{username:string, password?: string} $authBasic
+     * @var null|array{username:string, password?: string} $authBasic HTTP Basic Authentication
      */
-    private null|array $authBasic = null;
+    private ?array $authBasic = null;
 
-    /**
-     * @var bool $isJson Is it JSON?
-     */
-    private bool $isJson;
-
-    /**
-     * @param string $url URL
-     * @param bool $isJson Is it JSON?
-     */
     public function __construct(
-        private readonly string $url,
-        private readonly RequestMethod $method = RequestMethod::GET,
-        bool $isJson = false,
-    ) {
-        $this->isJson = $isJson;
-    }
+        /**
+         * @var \Uri\Rfc3986\Uri $url URL
+         */
+        private readonly \Uri\Rfc3986\Uri $url,
+
+        /**
+         * @var RequestMethodEnum $method Request method
+         */
+        private readonly RequestMethodEnum $method = RequestMethodEnum::GET,
+
+        /**
+         * @var bool $isJson Is it JSON?
+         */
+        private bool $isJson = false,
+    ) {}
 
     /**
      * @see RequestInterface
      */
-    public function getUrl(): string
+    #[\Override]
+    public function getUrl(): \Uri\Rfc3986\Uri
     {
         return $this->url;
     }
@@ -102,7 +101,8 @@ final class Request implements RequestInterface
     /**
      * @see RequestInterface
      */
-    public function getMethod(): RequestMethod
+    #[\Override]
+    public function getMethod(): RequestMethodEnum
     {
         return $this->method;
     }
@@ -111,10 +111,8 @@ final class Request implements RequestInterface
      * Request body
      *
      * @param null|array $body
-     *
-     * @return $this
      */
-    public function setBody(null|array $body): self
+    public function setBody(?array $body): self
     {
         $this->body = $body;
 
@@ -124,7 +122,8 @@ final class Request implements RequestInterface
     /**
      * @see RequestInterface
      */
-    public function getBody(): null|array
+    #[\Override]
+    public function getBody(): ?array
     {
         return $this->body;
     }
@@ -134,10 +133,8 @@ final class Request implements RequestInterface
      * This value must use the format ['parameter-name' => parameter-value, ...].
      *
      * @param null|array $query
-     *
-     * @return $this
      */
-    public function setQuery(null|array $query): self
+    public function setQuery(?array $query): self
     {
         $this->query = $query;
 
@@ -147,7 +144,8 @@ final class Request implements RequestInterface
     /**
      * @see RequestInterface
      */
-    public function getQuery(): null|array
+    #[\Override]
+    public function getQuery(): ?array
     {
         return $this->query;
     }
@@ -156,11 +154,9 @@ final class Request implements RequestInterface
      * An associative array of the HTTP headers added before making the request.
      * This value must use the format ['header-name' => 'value0, value1, ...'].
      *
-     * @param null|string[][] $headers
-     *
-     * @return $this
+     * @param null|array<non-empty-string, string> $headers
      */
-    public function setHeaders(null|array $headers): self
+    public function setHeaders(?array $headers): self
     {
         $this->headers = $headers ?? [];
 
@@ -168,8 +164,19 @@ final class Request implements RequestInterface
     }
 
     /**
+     * @param Headers\RequestHeaderInterface $header
+     */
+    public function addHeader(Headers\RequestHeaderInterface $header): self
+    {
+        $this->headers[$header->getHeaderName()] = $header->getHeaderValue();
+
+        return $this;
+    }
+
+    /**
      * @see RequestInterface
      */
+    #[\Override]
     public function getHeaders(): array
     {
         return $this->headers;
@@ -180,10 +187,8 @@ final class Request implements RequestInterface
      * Its default value is the same as the value of PHP's default_socket_timeout config option.
      *
      * @param null|int $timeout
-     *
-     * @return $this
      */
-    public function setTimeout(null|int $timeout): self
+    public function setTimeout(?int $timeout): self
     {
         $this->timeout = $timeout;
 
@@ -193,7 +198,8 @@ final class Request implements RequestInterface
     /**
      * @see RequestInterface
      */
-    public function getTimeout(): null|int
+    #[\Override]
+    public function getTimeout(): ?int
     {
         return $this->timeout;
     }
@@ -203,10 +209,8 @@ final class Request implements RequestInterface
      * A value lower than or equal to 0 means it is unlimited.
      *
      * @param null|int $connectionTimeout
-     *
-     * @return $this
      */
-    public function setConnectionTimeout(null|int $connectionTimeout): self
+    public function setConnectionTimeout(?int $connectionTimeout): self
     {
         $this->connectionTimeout = $connectionTimeout;
 
@@ -216,7 +220,8 @@ final class Request implements RequestInterface
     /**
      * @see RequestInterface
      */
-    public function getConnectionTimeout(): null|int
+    #[\Override]
+    public function getConnectionTimeout(): ?int
     {
         return $this->connectionTimeout;
     }
@@ -225,10 +230,8 @@ final class Request implements RequestInterface
      * Raw request body
      *
      * @param null|string $rawBody
-     *
-     * @return $this
      */
-    public function setRawBody(null|string $rawBody): self
+    public function setRawBody(?string $rawBody): self
     {
         $this->rawBody = $rawBody;
 
@@ -238,7 +241,8 @@ final class Request implements RequestInterface
     /**
      * @see RequestInterface
      */
-    public function getRawBody(): null|string
+    #[\Override]
+    public function getRawBody(): ?string
     {
         return $this->rawBody;
     }
@@ -248,10 +252,8 @@ final class Request implements RequestInterface
      * servers' certificates.
      *
      * @param null|string $caFile
-     *
-     * @return $this
      */
-    public function setCaFile(null|string $caFile): self
+    public function setCaFile(?string $caFile): self
     {
         $this->caFile = $caFile;
 
@@ -261,19 +263,16 @@ final class Request implements RequestInterface
     /**
      * @see RequestInterface
      */
-    public function getCaFile(): null|string
+    #[\Override]
+    public function getCaFile(): ?string
     {
         return $this->caFile;
     }
 
     /**
-     * The path to a directory that contains one or more certificate authority files.
-     *
-     * @param null|string $caFile
-     *
-     * @return $this
+     * @param null|string $caPath The path to a directory that contains one or more certificate authority files.
      */
-    public function setCaPath(null|string $caPath): self
+    public function setCaPath(?string $caPath): self
     {
         $this->caPath = $caPath;
 
@@ -283,7 +282,8 @@ final class Request implements RequestInterface
     /**
      * @see RequestInterface
      */
-    public function getCaPath(): null|string
+    #[\Override]
+    public function getCaPath(): ?string
     {
         return $this->caPath;
     }
@@ -293,10 +293,8 @@ final class Request implements RequestInterface
      * The value of this option must follow the format username:password.
      *
      * @param null|array{username:string, password?: string} $authBasic
-     *
-     * @return $this
      */
-    public function setAuthBasic(null|array $authBasic): self
+    public function setAuthBasic(?array $authBasic): self
     {
         $this->authBasic = $authBasic;
 
@@ -306,7 +304,8 @@ final class Request implements RequestInterface
     /**
      * @see RequestInterface
      */
-    public function getAuthBasic(): null|array
+    #[\Override]
+    public function getAuthBasic(): ?array
     {
         return $this->authBasic;
     }
@@ -314,6 +313,7 @@ final class Request implements RequestInterface
     /**
      * @see RequestInterface
      */
+    #[\Override]
     public function isJson(): bool
     {
         return $this->isJson;

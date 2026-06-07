@@ -4,48 +4,40 @@ declare(strict_types=1);
 
 namespace Ovvio\Component\Http\HttpClient\Response;
 
-use Ovvio\Component\Http\HttpClient\Response\Enum\ResponseStatusCode;
-use Ovvio\Component\Serializer\SerializerFactory;
-
 /**
  * HTTP response
  */
 final class Response implements ResponseInterface
 {
     /**
-     * @var ResponseStatusCode $statusCode
-     */
-    private ResponseStatusCode $statusCode;
-
-    /**
-     * @var null|string $body
-     */
-    private null|string $body;
-
-    /**
-     * @var string[][] $headers
-     */
-    private array $headers;
-
-    /**
      * @param string[][] $headers
      */
     public function __construct(
-        ResponseStatusCode $statusCode,
-        null|string $body = null,
-        array $headers = [],
-    ) {
-        $this->setStatusCode($statusCode);
-        $this->setBody($body);
-        $this->headers = $headers;
-    }
+        /**
+         * @var Enum\HttpResponseStatusCodeEnum $statusCode HTTP response status code
+         */
+        private Enum\HttpResponseStatusCodeEnum $statusCode,
+
+        /**
+         * @var null|string $rawBody
+         */
+        private ?string $rawBody,
+
+        /**
+         * @var string[][] $headers
+         */
+        private array $headers,
+
+        /**
+         * @var null|array<array-key, mixed> $body
+         */
+        private ?array $body = null,
+    ) {}
 
     /**
      * Sets the response status code.
-     *
-     * @return $this
      */
-    public function setStatusCode(ResponseStatusCode $statusCode): self
+    public function setStatusCode(Enum\HttpResponseStatusCodeEnum $statusCode): self
     {
         $this->statusCode = $statusCode;
 
@@ -55,7 +47,9 @@ final class Response implements ResponseInterface
     /**
      * @see ResponseInterface
      */
-    public function getStatusCode(): ResponseStatusCode
+    #[\Override]
+    #[\NoDiscard]
+    public function getStatusCode(): Enum\HttpResponseStatusCodeEnum
     {
         return $this->statusCode;
     }
@@ -63,17 +57,37 @@ final class Response implements ResponseInterface
     /**
      * @see ResponseInterface
      */
+    #[\Override]
+    #[\NoDiscard]
     public function getHeaders(): array
     {
         return $this->headers;
     }
 
     /**
-     * Sets the response body.
-     *
-     * @return $this
+     * Sets the response rawBody.
      */
-    final public function setBody(null|string $body): self
+    final public function setRawBody(?string $rawBody): self
+    {
+        $this->rawBody = $rawBody;
+
+        return $this;
+    }
+
+    /**
+     * @see ResponseInterface
+     */
+    #[\Override]
+    #[\NoDiscard]
+    public function getRawBody(): ?string
+    {
+        return $this->rawBody;
+    }
+
+    /**
+     * Sets the response body.
+     */
+    final public function setBody(?array $body): self
     {
         $this->body = $body;
 
@@ -83,24 +97,10 @@ final class Response implements ResponseInterface
     /**
      * @see ResponseInterface
      */
-    public function getBody(): null|string
+    #[\Override]
+    #[\NoDiscard]
+    public function getBody(): ?array
     {
         return $this->body;
-    }
-
-    /**
-     * @see ResponseInterface
-     */
-    public function toArray(): null|array
-    {
-        $body = $this->getBody();
-
-        if (null === $body) {
-            return null;
-        }
-
-        $serializer = SerializerFactory::create();
-
-        return $serializer->jsonToArray($body);
     }
 }

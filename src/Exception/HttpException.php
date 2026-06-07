@@ -4,39 +4,54 @@ declare(strict_types=1);
 
 namespace Ovvio\Component\Http\HttpClient\Exception;
 
-use Ovvio\Component\Http\HttpClient\Response\Enum\ResponseStatusCode;
-use Ovvio\Exceptions\BaseException;
-use Ovvio\Exceptions\Exceptions;
-use Throwable;
+use Ovvio\Component\Http\HttpClient\Response\Enum\HttpResponseStatusCodeEnum;
 
 /**
  * HTTP exception
  */
-class HttpException extends BaseException
+final class HttpException extends \RuntimeException
 {
     /**
-     * @param ResponseStatusCode $statusCode HTTP response status codes
+     * @var HttpResponseStatusCodeEnum $statusCode HTTP response status codes
      */
+    private readonly HttpResponseStatusCodeEnum $statusCode;
+
     public function __construct(
-        private readonly ResponseStatusCode $statusCode = ResponseStatusCode::HTTP_INTERNAL_SERVER_ERROR,
+        /**
+         * @var int|HttpResponseStatusCodeEnum $statusCode HTTP response status codes
+         */
+        int|HttpResponseStatusCodeEnum $statusCode = HttpResponseStatusCodeEnum::InternalServerError,
         string $message = 'HTTP exception',
-        null|int $code = Exceptions::EXCEPTION_CODE_DEFAULT,
-        null|Throwable $previous = null,
+        private array $headers = [],
+        int $code = 0,
+        ?\Throwable $previous = null,
     ) {
+        if (true === $statusCode instanceof HttpResponseStatusCodeEnum) {
+            $this->statusCode = $statusCode;
+        } else {
+            $this->statusCode = HttpResponseStatusCodeEnum::from($statusCode);
+        }
+
         parent::__construct(
             message: $message,
-            code: $code ?? Exceptions::EXCEPTION_CODE_DEFAULT,
+            code: $code,
             previous: $previous,
         );
     }
 
     /**
      * Get the value of statusCode
-     *
-     * @return ResponseStatusCode
      */
-    public function getStatusCode(): ResponseStatusCode
+    public function getStatusCode(): HttpResponseStatusCodeEnum
     {
         return $this->statusCode;
+    }
+
+    /**
+     * Get headers
+     */
+    public function getHeaders(): array
+    {
+        return $this->headers;
     }
 }

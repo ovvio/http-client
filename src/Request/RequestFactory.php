@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Ovvio\Component\Http\HttpClient\Request;
 
-use LogicException;
 use Ovvio\Component\Http\HttpClient\Request\Enum\RequestMethod;
-
-use function is_array;
+use Ovvio\Component\Http\HttpClient\Response\Enum\HttpResponseStatusCodeEnum;
 
 /**
  * HTTP request factory
@@ -17,10 +15,10 @@ final class RequestFactory
     /**
      * Create Request
      *
-     * @param string $url URL
-     * @param RequestMethod $method URL
+     * @param \Uri\Rfc3986\Uri $url URL
+     * @param Enum\RequestMethodEnum $method URL
      * @param null|string|array $body Request body
-     * @param string[][] $headers An associative array of the HTTP headers added before making the request.
+     * @param array<non-empty-string, string> $headers An associative array of the HTTP headers added before making the request.
      *                            This value must use the format ['header-name' => 'value0, value1, ...'].
      * @param null|int $timeout Time, in seconds, to wait for a response.
      * @param null|array{username:string, password?: string} $authBasic The username and password used to create the
@@ -31,24 +29,25 @@ final class RequestFactory
      *
      * @param bool $isJson Is it JSON?
      *
-     * @throws LogicException
+     * @throws \Ovvio\Component\Http\HttpClient\Exception\HttpException
      */
+    #[\NoDiscard]
     public static function create(
-        string $url,
-        RequestMethod $method,
-        null|string|array $body = null,
-        null|array $query = null,
+        \Uri\Rfc3986\Uri $url,
+        Enum\RequestMethodEnum $method,
+        string|array|null $body = null,
+        ?array $query = null,
         array $headers = [],
-        null|int $timeout = null,
-        null|int $connectionTimeout = null,
-        null|string $caFile = null,
-        null|string $caPath = null,
-        null|array $authBasic = null,
+        ?int $timeout = null,
+        ?int $connectionTimeout = null,
+        ?string $caFile = null,
+        ?string $caPath = null,
+        ?array $authBasic = null,
         bool $isJson = false,
     ): RequestInterface {
         $request = new Request(url: $url, method: $method, isJson: $isJson);
 
-        if (is_array($body)) {
+        if (true === \is_array($body)) {
             $request->setBody($body);
         } else {
             $request->setRawBody($body);
@@ -61,23 +60,29 @@ final class RequestFactory
 
         if (null !== $caFile) {
             if (false === \is_file($caFile)) {
-                throw new LogicException('"' . $caFile . '" it is not a file.', 0);
+                throw new \Ovvio\Component\Http\HttpClient\Exception\HttpException(
+                    statusCode: HttpResponseStatusCodeEnum::InternalServerError,
+                    message: \sprintf('"%s" it is not a file.', $caFile),
+                );
             }
         }
         $request->setCaFile($caFile);
 
         if (null !== $caPath) {
             if (false === \is_dir($caPath)) {
-                throw new LogicException('"' . $caPath . '" it is not a directory.', 0);
+                throw new \Ovvio\Component\Http\HttpClient\Exception\HttpException(
+                    statusCode: HttpResponseStatusCodeEnum::InternalServerError,
+                    message: \sprintf('"%s" it is not a directory.', $caPath),
+                );
             }
         }
         $request->setCaPath($caPath);
 
         if (null !== $authBasic) {
             if (false === isset($authBasic['username'])) {
-                throw new LogicException(
-                    'The required "username" parameter is missing for  basic authentication',
-                    0
+                throw new \Ovvio\Component\Http\HttpClient\Exception\HttpException(
+                    statusCode: HttpResponseStatusCodeEnum::Unauthorized,
+                    message: 'The required "username" parameter is missing for basic authentication'
                 );
             }
         }

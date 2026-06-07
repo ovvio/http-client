@@ -15,10 +15,8 @@
     "prefer-stable": true,
     "minimum-stability": "dev",
     "require": {
-        "php": ">=8.4",
-        "ovvio/exceptions": "^1.0",
-        "ovvio/serializer": "^1.0",
-        "symfony/http-client": "^7.2"
+        "php": ">=8.5",
+        "symfony/http-client": "^8.1"
     },
     "autoload": {
         "psr-4": { "Ovvio\\Component\\Http\\HttpClient\\": "src/" }
